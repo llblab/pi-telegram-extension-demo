@@ -1,6 +1,6 @@
 {
   "name": "@llblab/pi-telegram-extension-demo",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "private": false,
   "publishConfig": {
     "access": "public"
@@ -22,6 +22,11 @@
   "engines": {
     "node": ">=22.0.0"
   },
+  "files": [
+    "index.ts",
+    "README.md",
+    "screenshot.png"
+  ],
   "pi": {
     "extensions": [
       "./index.ts"

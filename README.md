@@ -1,5 +1,7 @@
 # pi-telegram-extension-demo
 
+![pi-telegram-extension-demo screenshot](screenshot.png)
+
 **Reference implementation of a third-party extension for `pi-telegram`.**
 
 This extension proves that ordinary pi extensions can add interactive buttons to the Telegram bot interface — main menu rows, Settings submenu toggles, and inline views — without owning a second bot poller, forking transport, or touching `pi-telegram` internals.
