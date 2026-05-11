@@ -1,0 +1,30 @@
+{
+  "name": "@llblab/pi-telegram-extension-demo",
+  "version": "0.1.0",
+  "private": false,
+  "publishConfig": {
+    "access": "public"
+  },
+  "description": "Demo Pi extension for Pi-Telegram — proves third-party devs can extend the Telegram interface",
+  "type": "module",
+  "peerDependencies": {
+    "@llblab/pi-telegram": "^0.10.0",
+    "@earendil-works/pi-coding-agent": "*"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/llblab/pi-telegram-extension-demo"
+  },
+  "homepage": "https://github.com/llblab/pi-telegram-extension-demo",
+  "bugs": {
+    "url": "https://github.com/llblab/pi-telegram-extension-demo/issues"
+  },
+  "engines": {
+    "node": ">=22.0.0"
+  },
+  "pi": {
+    "extensions": [
+      "./index.ts"
+    ]
+  }
+}
