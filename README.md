@@ -6,7 +6,7 @@
 
 This extension proves that ordinary pi extensions can add interactive buttons to the Telegram bot interface — main menu rows, Settings submenu toggles, and inline views — without owning a second bot poller, forking transport, or touching `pi-telegram` internals.
 
-Import `registerTelegramSection` from `@llblab/pi-telegram`, define a section with `render`, `handleCallback`, and optional `settings`, and the bridge handles polling, callback routing, navigation hierarchy, authorization, and diagnostics.
+Import `registerTelegramSection` from `@llblab/pi-telegram/sections`, define a section with `render`, `handleCallback`, and optional `settings`, and the bridge handles polling, callback routing, navigation hierarchy, authorization, and diagnostics.
 
 ## Install
 
@@ -22,13 +22,13 @@ From git:
 pi install git:github.com/llblab/pi-telegram-extension-demo
 ```
 
-Requires `@llblab/pi-telegram` ^0.10.0 (which provides the Extension Sections platform).
+Requires `@llblab/pi-telegram` ^0.12.0 (which provides the Extension Sections platform public API).
 
 ## What it registers
 
 Two UI surfaces through `pi-telegram`'s Extension Sections platform:
 
-- **Main menu** — `🧪 Demo submenu` row before ⚙️ Settings. Opens an interactive panel with enqueue-prompt, answer-callback, info popup, and a live counter that edits its own message.
+- **Main menu** — `🧪 Demo submenu` row before ⚙️ Settings. Opens an interactive panel with enqueue-prompt, answer-callback, info popup, a live counter, and a confirmation dialog (`💬 Confirm dialog`) that sends buttons into chat, deletes itself on answer, and posts a follow-up message.
 - **Settings submenu** — `🧪 Demo settings` row with a dynamic ON/OFF status indicator (`🟢`/`⚫️`). Opens a toggle panel where clicking ON/OFF re-renders the view and updates the indicator in the Settings list.
 
 Every button click produces an unambiguous result: a queued prompt, a native Telegram popup, or a message edit. Navigation hierarchy (Back → parent, Main menu → root) is preserved automatically by the platform.
@@ -37,7 +37,7 @@ Every button click produces an unambiguous result: a queued prompt, a native Tel
 
 ```ts
 import type { ExtensionAPI } from "@earendil-works/pi-coding-agent";
-import { registerTelegramSection } from "@llblab/pi-telegram/lib/extension-sections.ts";
+import { registerTelegramSection } from "@llblab/pi-telegram/sections";
 
 export default function (pi: ExtensionAPI) {
   const unregister = registerTelegramSection({
@@ -68,12 +68,12 @@ export default function (pi: ExtensionAPI) {
 
 ## Dependencies
 
-- `@llblab/pi-telegram` ^0.10.0 (peer) — provides `registerTelegramSection` and the shared Telegram shell
+- `@llblab/pi-telegram` ^0.12.0 (peer) — provides `registerTelegramSection` and the shared Telegram shell
 - `@earendil-works/pi-coding-agent` (peer) — provides `ExtensionAPI` types
 
 ## Reference
 
-- [Extension Sections Standard](https://github.com/llblab/pi-telegram/blob/main/docs/extension-sections.md) — full contract, context ports, navigation rules, Telegram Bot API integration
+- [Extension Sections Standard](https://github.com/llblab/pi-telegram/blob/main/docs/sections.md) — full contract, context ports, navigation rules, Telegram Bot API integration
 - [pi-telegram](https://github.com/llblab/pi-telegram) — the Telegram runtime adapter for π
 - [Callback Namespaces](https://github.com/llblab/pi-telegram/blob/main/docs/callback-namespaces.md) — shared callback ownership rules
 

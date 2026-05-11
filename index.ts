@@ -1,12 +1,12 @@
 /**
- * pi-telegram-extension-demo — button demo for Telegram Extension Sections (0.10.0)
+ * pi-telegram-extension-demo — button demo for Telegram Extension Sections (0.12.0)
  *
- * Standalone pi extension depending on @llblab/pi-telegram ^0.10.0.
+ * Standalone pi extension depending on @llblab/pi-telegram ^0.12.0.
  * Proves third-party devs can extend the pi-telegram interface via Extension Sections.
  */
 
 import type { ExtensionAPI } from "@earendil-works/pi-coding-agent";
-import { registerTelegramSection } from "@llblab/pi-telegram/lib/extension-sections.ts";
+import { registerTelegramSection } from "@llblab/pi-telegram/sections";
 
 export default function (pi: ExtensionAPI) {
   const disposers: Array<() => void> = [];
@@ -17,7 +17,7 @@ export default function (pi: ExtensionAPI) {
     order: 10,
     render: async (ctx) => {
       return {
-        text: "<b>🧪 Extension Sections Demo</b>\n\nThis section proves the 0.10.0 platform works.\nEvery button below does something unambiguous.",
+        text: "<b>🧪 Extension Sections Demo</b>\n\nThis section proves the Extension Sections platform works.\nEvery button below does something unambiguous.",
         parseMode: "html",
         replyMarkup: {
           inline_keyboard: [
@@ -43,6 +43,12 @@ export default function (pi: ExtensionAPI) {
                 callback_data: ctx.callbackData("counter", "0"),
               },
             ],
+            [
+              {
+                text: "💬 Confirm dialog",
+                callback_data: ctx.callbackData("confirm", "demo-action"),
+              },
+            ],
           ],
         },
       };
@@ -61,7 +67,7 @@ export default function (pi: ExtensionAPI) {
       }
       if (ctx.action === "info") {
         await ctx.answerCallback(
-          "pi-telegram-extension-demo v0.1.0 — third-party extension for pi-telegram",
+          "pi-telegram-extension-demo v0.2.0 — third-party extension for pi-telegram",
         );
         return "handled";
       }
@@ -82,6 +88,41 @@ export default function (pi: ExtensionAPI) {
           },
         });
         await ctx.answerCallback(`Count: ${count}`);
+        return "handled";
+      }
+      if (ctx.action === "confirm") {
+        await ctx.open({
+          text: `<b>Confirm action?</b>\n\nRun <i>${ctx.payload}</i>?`,
+          parseMode: "html",
+          replyMarkup: {
+            inline_keyboard: [
+              [
+                {
+                  text: "✅ Yes",
+                  callback_data: ctx.callbackData("confirmed", ctx.payload),
+                },
+                { text: "❌ No", callback_data: ctx.callbackData("cancelled") },
+              ],
+            ],
+          },
+        });
+        await ctx.answerCallback("Confirmation sent to chat");
+        return "handled";
+      }
+      if (ctx.action === "confirmed") {
+        await ctx.deleteMessage();
+        await ctx.open({
+          text: `<b>✅ Done</b>\n\nAction <i>${ctx.payload}</i> executed successfully.`,
+          parseMode: "html",
+        });
+        return "handled";
+      }
+      if (ctx.action === "cancelled") {
+        await ctx.deleteMessage();
+        await ctx.open({
+          text: `<b>❌ Cancelled</b>\n\nAction <i>${ctx.payload}</i> was cancelled.`,
+          parseMode: "html",
+        });
         return "handled";
       }
       return "pass";
